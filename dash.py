@@ -9,22 +9,6 @@ st.header("App")
 st.write("Sitio que te permite analizar de form visual y concentrada los datos de airbnb")
 
 @st.cache
-def df_hometown(neighbourhood):
-    neighbourhood_filter=airbnb[airbnb["neighbourhood"].str.upper().str.contains(neighbourhood.upper())]
-    
-    return neighbourhood_filter
-
-neighbourhood_sb= st.sidebar.text_input("Vecindario")
-search_neighbourhood=st.sidebar.button("Search by hometown")
-
-if(search_neighbourhood):
-    neighbourhood_filter_if= df_hometown(neighbourhood_sb)
-    count_row= neighbourhood_filter_if.shape[0]
-    st.write(f"Total: {count_row} outcome")
-
-    st.dataframe(neighbourhood_filter_if)
-
-@st.cache
 def load_data(nrows):
     airbnb = pd.read_csv("airbnb_clean.csv", nrows=nrows)
     lowercase = lambda x: str(x).lower()
@@ -41,6 +25,22 @@ data_description = st.sidebar.checkbox("Data description")
 if data_description:
     st.header("Show Dataframe Overview")
     st.dataframe(airbnb)
+
+@st.cache
+def df_hometown(neighbourhood):
+    neighbourhood_filter=airbnb[airbnb["neighbourhood"].str.upper().str.contains(neighbourhood.upper())]
+    
+    return neighbourhood_filter
+
+neighbourhood_sb= st.sidebar.text_input("Vecindario")
+search_neighbourhood=st.sidebar.button("Search by hometown")
+
+if(search_neighbourhood):
+    neighbourhood_filter_if= df_hometown(neighbourhood_sb)
+    count_row= neighbourhood_filter_if.shape[0]
+    st.write(f"Total: {count_row} outcome")
+
+    st.dataframe(neighbourhood_filter_if)
 
 @st.cache
 def room_clase(room_class):
@@ -91,12 +91,9 @@ if typeroom_price:
     st.pyplot(fig)
     st.markdown("_")
 
-
 #filtrar entre un rango de precios (minimo y maximo)
 price_filter = st.slider('price', 99998, 5000, 0)
 filtered_range = airbnb[airbnb['price'] == price_filter]
 
 st.subheader('Mapa de las residencias at %s' % price_filter)
 st.map(filtered_range)
-
-
