@@ -33,7 +33,7 @@ def df_hometown(neighbourhood):
     return neighbourhood_filter
 
 neighbourhood_sb= st.sidebar.text_input("Vecindario")
-search_neighbourhood=st.sidebar.button("Search by hometown")
+search_neighbourhood=st.sidebar.button("Busca por vecindario")
 
 if(search_neighbourhood):
     neighbourhood_filter_if= df_hometown(neighbourhood_sb)
@@ -49,7 +49,7 @@ def room_clase(room_class):
     return filter_room
 
 select_type= st.sidebar.selectbox("Selecciona el tipo de residencia", airbnb['room_type'].unique())
-search_class=st.sidebar.button("Buscando residencias...")
+search_class=st.sidebar.button("Busca residencia")
 
 if(search_class):
     filter_type_if= room_clase(select_type)
@@ -92,8 +92,16 @@ if typeroom_price:
     st.markdown("_")
 
 #filtrar entre un rango de precios (minimo y maximo)
-price_filter = st.slider('price', 99998, 5000, 0)
+price_filter = st.slider('price', 5000 ,99998, 0)
 filtered_range = airbnb[airbnb['price'] == price_filter]
 
-st.subheader('Mapa de las residencias at %s' % price_filter)
-st.map(filtered_range)
+
+#st.subheader('Mapa de residencias %s' % price_filter)
+
+# MAPA profe
+st.title("Mapeo de Casas")
+st.header("Using Streamlit and Mapbox") 
+
+map_data = pd.airbnb(columns=['latitude', 'longitude'])
+
+st.map(map_data)
